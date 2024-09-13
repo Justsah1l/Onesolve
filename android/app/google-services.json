@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "123110478648",
+    "project_id": "osolve-8ccdc",
+    "storage_bucket": "osolve-8ccdc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:123110478648:android:52f87a8808c92970df27cd",
+        "android_client_info": {
+          "package_name": "com.example.solve"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "123110478648-83t09v9iucpeknbjlvnlsjmmf5bpqp58.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtFj1UH6e4A-KER2c9e_5BxsS7ZqrCTLU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "123110478648-83t09v9iucpeknbjlvnlsjmmf5bpqp58.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
