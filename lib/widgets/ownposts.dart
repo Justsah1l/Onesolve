@@ -1,26 +1,24 @@
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:solve/models/post.dart';
-import 'package:solve/widgets/detailpost.dart';
-import 'package:solve/widgets/profile.dart';
 import 'package:http/http.dart' as http;
+import 'package:solve/widgets/detailpost.dart';
 
-class Displaypage extends StatefulWidget {
-  const Displaypage({super.key});
+class Ownposts extends StatefulWidget {
+  const Ownposts({super.key});
 
   @override
-  State<Displaypage> createState() => _DisplaypageState();
+  State<Ownposts> createState() => _OwnpostsState();
 }
 
-class _DisplaypageState extends State<Displaypage> {
+class _OwnpostsState extends State<Ownposts> {
   final ip = dotenv.env['IP'] ?? '';
-  User? user = FirebaseAuth.instance.currentUser;
   List<Post> posts = [];
+  User? user = FirebaseAuth.instance.currentUser;
+  String? userId;
   Map<String, Color> problemTypeColors = {
     "Technical Issues": Colors.black,
     "Product Recommendations": Colors.blue,
@@ -30,15 +28,25 @@ class _DisplaypageState extends State<Displaypage> {
     "Personal Finance": Colors.yellow,
     "Other": Colors.grey,
   };
+  void _getCurrentUser() {
+    User? user = FirebaseAuth.instance.currentUser;
+    setState(() {
+      userId = user?.uid;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    fetchPosts(); // Fetch posts when the page loads
+    _getCurrentUser();
+    fetchPosts();
   }
 
   Future<void> fetchPosts() async {
     try {
-      final response = await http.get(Uri.parse('$ip/posts'));
+      final response = await http.get(
+        Uri.parse('$ip/myposts?userid=$userId'),
+      );
       print("posts response");
       print(response.body);
       if (response.statusCode == 200) {
@@ -49,7 +57,7 @@ class _DisplaypageState extends State<Displaypage> {
                 return Post.fromJson(data);
               } catch (e) {
                 print('Error parsing post: $e');
-                return null; // Handle parsing errors
+                return null;
               }
             })
             .whereType<Post>()
@@ -66,20 +74,21 @@ class _DisplaypageState extends State<Displaypage> {
     }
   }
 
+  @override
   Widget build(BuildContext context) {
     const int maxLength = 200;
     return Scaffold(
+      appBar: AppBar(),
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 7),
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Explore",
-                style: GoogleFonts.geologica(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 29,
-                )),
+            Text(
+              "Your Posts",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
+            ),
             SizedBox(height: 20),
             Expanded(
               child: posts.isEmpty
@@ -132,9 +141,6 @@ class _DisplaypageState extends State<Displaypage> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(post.name),
-                                          (user?.uid == post.userid
-                                              ? Text("Your post")
-                                              : Text("Not")),
                                           Container(
                                             padding: EdgeInsets.symmetric(
                                                 vertical: 5, horizontal: 7),

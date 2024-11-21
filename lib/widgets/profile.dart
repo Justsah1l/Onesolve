@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:solve/services/auth_service.dart';
+import 'package:solve/widgets/ownposts.dart';
 
 class Profilepage extends StatefulWidget {
   const Profilepage({super.key});
@@ -133,8 +134,14 @@ class _ProfilepageState extends State<Profilepage> {
                   return GestureDetector(
                     onTap: () {
                       if (items[index] == "Logout") {
-                        //AuthService.signOut(context);
-                      } else {}
+                        AuthService.signOut(context);
+                      } else if (items[index] == "Your posts") {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Ownposts(),
+                            ));
+                      }
                     },
                     child: Padding(
                       padding: items[index] == "Logout"

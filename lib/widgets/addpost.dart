@@ -37,7 +37,7 @@ class _AddpostState extends State<Addpost> {
   }
 
   Future<void> _uploadPost() async {
-    var url = Uri.parse("http://$ip:8080/addposts");
+    var url = Uri.parse("$ip/addposts");
     var request = http.MultipartRequest('POST', url);
 
     request.fields['userid'] = user?.uid ?? '';

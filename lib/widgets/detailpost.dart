@@ -26,8 +26,8 @@ class _DetailpostState extends State<Detailpost> {
 
   // Function to fetch comments for the post
   Future<void> fetchComments() async {
-    final response = await http
-        .get(Uri.parse('http://$ip:8080/comments?post_id=${widget.postId}'));
+    final response =
+        await http.get(Uri.parse('$ip/comments?post_id=${widget.postId}'));
 
     if (response.statusCode == 200) {
       print("res ------------------------------------ ");
@@ -44,7 +44,7 @@ class _DetailpostState extends State<Detailpost> {
   // Function to submit a comment
   Future<void> submitComment() async {
     final response = await http.post(
-      Uri.parse('http://192.168.1.5:8080/addcomment'),
+      Uri.parse('$ip/addcomment'),
       body: {
         'post_id': widget.postId.toString(),
         'userid': 'user123', // You can change this to the actual user ID
@@ -64,18 +64,50 @@ class _DetailpostState extends State<Detailpost> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Detail Post"),
-      ),
+      appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Display Post ID
-            Text("Post ID: ${widget.postId}", style: TextStyle(fontSize: 18)),
+            //Text("Post ID: ${widget.postId}", style: TextStyle(fontSize: 18)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                ClipOval(
+                  child: Image.network(
+                    'https://via.placeholder.com/150', // Placeholder if no photo URL
+                    width: 40,
+                    height: 40,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  "Posted by name here",
+                  style: TextStyle(fontWeight: FontWeight.w500),
+                )
+              ],
+            ),
             SizedBox(height: 16),
-
+            Text(
+              "A title for example with a long sentence for a long example to see if UI looks good",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
+            SizedBox(height: 16),
+            Text(
+              "A description for example with a long sentence for a long example to see if UI looks good goodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgoodgood",
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 17,
+              ),
+            ),
+            SizedBox(height: 16),
             // TextField to enter a comment
             TextField(
               controller: commentController,
